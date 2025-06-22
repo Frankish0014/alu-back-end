@@ -1,10 +1,6 @@
 # Web Infrastructure
 
 
-## Project Overview
-
- 
-
 ### Background Context
 
 Old-school system administrators typically rely on Bash for scripting, which can become messy and inefficient compared to other programming languages. The new generation of system administrators, known as Site Reliability Engineers (SREs), possess a broader skill set beyond Bash scripting. One effective way to expose applications and datasets is through APIs, which serve as the public-facing components of websites and microservices, allowing external interactions with data.
