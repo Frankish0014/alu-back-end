@@ -1,26 +1,31 @@
 #!/usr/bin/python3
-""" Library to gather data from an API """
+""" Importing neccessary libraries to gather data from API """
 
 import requests
 import sys
 
-""" Function to gather data from an API """
+""" start teh code with function to gather infomation """
 
 if __name__ == "__main__":
-    employee_id = sys.argv[1]
-    url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
+    employee_id = sys.argv(1)
+    rest_url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id) ## pasing and formating employee_id as .formate(employee_id)
 
-    todo = "https://jsonplaceholder.typicode.com/todos?userId={}".format(employee_id)
+    ## Extract and hold todos from 
+    todo = "https://jsonplaceholder.typicode.com/todos?userId={}"
+    ## Formate and hold todo 
+    todo = todo.format(employee_id)
+    
+    ## We now request for the info sending a GET request to from all the url links and be parsed to the JSON file
+    employee_info = requests.request("GET", rest_url).json()
+    employee_todo_info = requests.request("GET", todo).json()
 
-    user_information = requests.request("GET", url).json()
-    todo_information = requests.request("GET", todo_data).json()
-
-    employee_name = user_information.get("name")
-    total_tasks = list(filter(lambda x: (x["completed"] is True), todo_information))
-    task_com = len(total_tasks)
-    total_task_done = len(todo_information)
-
-    print("Employee {} is done with tasks({}/{}):".format(employee_name,
-          task_com, total_task_done))
-
-    [print("\t {}".format(task.get("title"))) for task in total_tasks]
+    ## Get the employee name from employee_info  
+    employee_name = employee_info.get("name") ## retrieves the name
+    completed_tasks = list(filter(lambda x: (x["completed"] is True), employee_todo_info)) ## retrieves the completed task from employyee_todo_info using lambda function for filter
+    taskcom = len(completed_tasks)
+    task_done = len(employee_todo_info)
+    
+    
+    print("Employee {} is done with task ({}/{}):".format(employee_name, taskcom, task_done))
+    
+    [print("\t {}".format(task.get("title"))) for task in completed_tasks]
