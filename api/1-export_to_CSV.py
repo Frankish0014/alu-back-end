@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    This python file exports data in the csv formate
+    python script that exports data in the CSV format
 """
 import csv
 import json
@@ -10,52 +10,42 @@ from sys import argv
 
 if __name__ == "__main__":
     """
-        Request info of the user bt ID by formating the entered ID to the url
+        request user info by employee ID
     """
-    request_emplo = requests.get('https://jsonplaceholder.typicode.come/users/{}/'.format(argv[1]))
+    request_employee = requests.get(
+        'https://jsonplaceholder.typicode.com/users/{}/'.format(argv[1]))
     """
-        convert json to dictionary.
+        convert json to dictionary
     """
-    
-    user = json.loads(request_emplo.text)
-    
+    user = json.loads(request_employee.text)
     """
-        extracting the username
+        extract username
     """
-    
-    user_name = user.get("user_name")
-    
-    
+    username = user.get("username")
+
     """
-        Requesting user todo
+        request user's TODO list
     """
-    
-    user_todo = requests.get('https://jsonplaceholder.typicode.com/users/{}/todos'.format(argv[1]))
-    
+    request_todos = requests.get(
+        'https://jsonplaceholder.typicode.com/users/{}/todos'.format(argv[1]))
     """
-        Creating a dictinary to hold the tasks
+        dictionary to store task status(completed) in boolean format
     """
-    
-    all_tasks = {}
-    
+    tasks = {}
     """
-        converting the todos into a dictionary 
+        convert json to list of dictionaries
     """
-    
-    todo_list = json.loads(user_todo.text)
-    
+    user_todos = json.loads(request_todos.text)
     """
-        get completed tasks by looping through the dictionary
+        loop through dictionary & get completed tasks
     """
-    
-    for dictionary in todo_list:
-        all_tasks.update({dictionary.get("title"): dictionary.get("completed")})
-    
+    for dictionary in user_todos:
+        tasks.update({dictionary.get("title"): dictionary.get("completed")})
+
     """
-        export to csv
+        export to CSV
     """
-    
-    with open('{}.csv'.format(argv[1]),mode='w') as file:
+    with open('{}.csv'.format(argv[1]), mode='w') as file:
         file_editor = csv.writer(file, delimiter=',', quoting=csv.QUOTE_ALL)
-        for k,v in all_tasks.items():
-            file_editor.writerow([argv[1], user_name, v, k])
+        for k, v in tasks.items():
+            file_editor.writerow([argv[1], username, v, k])
